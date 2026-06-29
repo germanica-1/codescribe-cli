@@ -1,0 +1,30 @@
+{
+    "manifest_version": "1.0",
+    "generated_at": "2026-06-29T04:14:24.301976+00:00",
+    "project": {
+        "name": "CodeScribe-cli",
+        "path": "/home/kirv/Desktop/projects/CodeScribe-cli"
+    },
+    "stats": {
+        "files": 10,
+        "folders": 3,
+        "total_items": 13
+    },
+    "tree": [
+        "README.md",
+        "pyproject.toml",
+        "src/codescribe/__init__.py",
+        "src/codescribe/__main__.py",
+        "src/codescribe/cli.py",
+        "src/codescribe/manifest.py",
+        "src/codescribe/scanner.py",
+        "src/codescribe/utils.py",
+        "src/codescribe/version.py",
+        "uv.lock"
+    ],
+    "languages": {
+        "Markdown": 1,
+        "TOML": 1,
+        "Python": 7
+    }
+}
