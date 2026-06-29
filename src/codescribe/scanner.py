@@ -2,6 +2,7 @@ from pathlib import Path
 
 from .analyzers.dependency import detect_dependencies
 from .analyzers.language import detect_languages
+from .ignore import GitIgnore
 from .manifest import Manifest, ProjectInfo, Stats
 from .utils import should_ignore
 
@@ -9,6 +10,7 @@ from .utils import should_ignore
 class ProjectScanner:
     def __init__(self, root: Path):
         self.root = root.resolve()
+        self.gitignore = GitIgnore(self.root)
 
     def scan(self) -> Manifest:
         files = self._collect_files()
@@ -36,7 +38,11 @@ class ProjectScanner:
         files = []
 
         for item in sorted(self.root.rglob("*")):
+
             if should_ignore(item):
+                continue
+
+            if self.gitignore.is_ignored(item):
                 continue
 
             if item.is_file():
@@ -48,7 +54,11 @@ class ProjectScanner:
         count = 0
 
         for item in self.root.rglob("*"):
+
             if should_ignore(item):
+                continue
+
+            if self.gitignore.is_ignored(item):
                 continue
 
             if item.is_dir():
