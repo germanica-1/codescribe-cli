@@ -1,0 +1,23 @@
+annotated-doc==0.0.4
+annotated-types==0.7.0
+ast-serialize==0.5.0
+-e file:///home/kirv/Desktop/projects/CodeScribe-cli
+iniconfig==2.3.0
+librt==0.11.0
+markdown-it-py==4.2.0
+mdurl==0.1.2
+mypy==2.1.0
+mypy-extensions==1.1.0
+packaging==26.2
+pathspec==1.1.1
+pluggy==1.6.0
+pydantic==2.13.4
+pydantic-core==2.46.4
+pygments==2.20.0
+pytest==9.1.1
+rich==15.0.0
+ruff==0.15.20
+shellingham==1.5.4
+typer==0.26.8
+typing-extensions==4.15.0
+typing-inspection==0.4.2
