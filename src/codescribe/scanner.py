@@ -1,6 +1,8 @@
 from pathlib import Path
 
 from .analyzers.dependency import detect_dependencies
+from .analyzers.framework import detect_frameworks
+from .analyzers.git import detect_git
 from .analyzers.language import detect_languages
 from .ignore import CodeScribeIgnore, GitIgnore
 from .manifest import Manifest, ProjectInfo, Stats
@@ -17,6 +19,12 @@ class ProjectScanner:
     def scan(self) -> Manifest:
         files, folders = self._scan_project()
 
+        dependencies = detect_dependencies(self.root)
+
+        frameworks = detect_frameworks(dependencies)
+
+        git = detect_git(self.root)
+
         return Manifest(
             project=ProjectInfo(
                 name=self.root.name,
@@ -32,7 +40,9 @@ class ProjectScanner:
                 for file in files
             ],
             languages=detect_languages(files),
-            dependencies=detect_dependencies(self.root),
+            dependencies=dependencies,
+            frameworks=frameworks,
+            git=git,
         )
 
     def _scan_project(self) -> tuple[list[Path], list[Path]]:

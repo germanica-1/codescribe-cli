@@ -1,6 +1,6 @@
 {
     "manifest_version": "1.0",
-    "generated_at": "2026-06-29T05:19:41.801700+00:00",
+    "generated_at": "2026-06-29T07:52:43.899928+00:00",
     "project": {
         "name": "CodeScribe-cli",
         "path": "/home/kirv/Desktop/projects/CodeScribe-cli"
@@ -42,5 +42,25 @@
             "typer"
         ],
         "node": []
+    },
+    "frameworks": {
+        "backend": [],
+        "frontend": [],
+        "cli": [
+            "Typer"
+        ],
+        "orm": [],
+        "testing": [],
+        "styling": [],
+        "build": []
+    },
+    "git": {
+        "repository": true,
+        "branch": "main",
+        "remote_name": "origin",
+        "remote_url": "git@github.com:germanica-1/codescribe-cli.git",
+        "latest_commit": "f3d4f96",
+        "latest_message": "feat(ui): add rich dashboard,progress bar (cosmetic for now), tree preview, and scan metrics",
+        "dirty": true
     }
 }
