@@ -1,10 +1,19 @@
 from pathlib import Path
+import time
 
 import typer
-from rich import print
 
 from .scanner import ProjectScanner
-
+from .ui import (
+    show_banner,
+    show_dashboard,
+    show_dependencies,
+    show_project,
+    show_tree,
+    progress,
+    success,
+)
+from .version import __version__
 
 app = typer.Typer(
     help="Generate AI-ready project manifests."
@@ -13,38 +22,60 @@ app = typer.Typer(
 
 @app.command()
 def version():
-    """
-    Show the current CodeScribe version.
-    """
-    print(f"[bold cyan]CodeScribe[/bold cyan] v{__version__}")
+    """Show CodeScribe version."""
+    typer.echo(f"CodeScribe v{__version__}")
 
 
 @app.command()
 def scan(
-    directory: Path = typer.Argument(
+    path: Path = typer.Argument(
         Path("."),
         help="Project directory to scan.",
     ),
 ):
-    """
-    Scan a project directory.
-    """
+    scanner = ProjectScanner(path)
 
-    if not directory.exists():
-        print("[red]Directory does not exist.[/red]")
-        raise typer.Exit(1)
+    show_banner()
 
-    print("[cyan]Scanning project...[/cyan]")
+    start = time.perf_counter()
 
-    scanner = ProjectScanner(directory)
+    with progress() as p:
 
-    manifest = scanner.scan()
+        task = p.add_task(
+            "Scanning project...",
+            total=100,
+        )
 
-    output = directory / "codescribe.json"
+        manifest = scanner.scan()
+
+        p.update(task, completed=100)
+
+    elapsed = time.perf_counter() - start
+
+    output = path / "codescribe.json"
 
     manifest.save(output)
 
-    print(f"[green]✓ Manifest written to {output}[/green]")
+    show_project(
+        manifest.project.name,
+        manifest.project.path,
+    )
+
+    show_dashboard(manifest)
+
+    show_dependencies(
+        manifest.dependencies,
+    )
+
+    show_tree(
+        manifest.tree,
+    )
+
+    success(
+        output.name,
+        elapsed,
+    )
+
 
 if __name__ == "__main__":
     app()

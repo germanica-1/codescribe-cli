@@ -2,7 +2,7 @@ from pathlib import Path
 
 from .analyzers.dependency import detect_dependencies
 from .analyzers.language import detect_languages
-from .ignore import GitIgnore
+from .ignore import CodeScribeIgnore, GitIgnore
 from .manifest import Manifest, ProjectInfo, Stats
 from .utils import should_ignore
 
@@ -10,11 +10,12 @@ from .utils import should_ignore
 class ProjectScanner:
     def __init__(self, root: Path):
         self.root = root.resolve()
+
         self.gitignore = GitIgnore(self.root)
+        self.codescribeignore = CodeScribeIgnore(self.root)
 
     def scan(self) -> Manifest:
-        files = self._collect_files()
-        folders = self._count_folders()
+        files, folders = self._scan_project()
 
         return Manifest(
             project=ProjectInfo(
@@ -23,8 +24,8 @@ class ProjectScanner:
             ),
             stats=Stats(
                 files=len(files),
-                folders=folders,
-                total_items=len(files) + folders,
+                folders=len(folders),
+                total_items=len(files) + len(folders),
             ),
             tree=[
                 str(file.relative_to(self.root))
@@ -34,8 +35,9 @@ class ProjectScanner:
             dependencies=detect_dependencies(self.root),
         )
 
-    def _collect_files(self) -> list[Path]:
+    def _scan_project(self) -> tuple[list[Path], list[Path]]:
         files = []
+        folders = []
 
         for item in sorted(self.root.rglob("*")):
 
@@ -45,23 +47,13 @@ class ProjectScanner:
             if self.gitignore.is_ignored(item):
                 continue
 
+            if self.codescribeignore.is_ignored(item):
+                continue
+
             if item.is_file():
                 files.append(item)
 
-        return files
+            elif item.is_dir():
+                folders.append(item)
 
-    def _count_folders(self) -> int:
-        count = 0
-
-        for item in self.root.rglob("*"):
-
-            if should_ignore(item):
-                continue
-
-            if self.gitignore.is_ignored(item):
-                continue
-
-            if item.is_dir():
-                count += 1
-
-        return count
+        return files, folders

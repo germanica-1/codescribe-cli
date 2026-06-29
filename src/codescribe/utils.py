@@ -11,6 +11,11 @@ DEFAULT_IGNORES = {
     "dist",
     "build",
     "codescribe.json",
+
+    
+    # Ignore configuration files
+    ".gitignore",
+    ".codescribeignore",
 }
 
 LANGUAGE_MAP = {
