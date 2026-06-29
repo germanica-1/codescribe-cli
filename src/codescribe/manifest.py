@@ -30,6 +30,8 @@ class Manifest(BaseModel):
 
     languages: dict[str, int]
 
+    dependencies: dict[str, list[str]]
+
     def save(self, output: Path) -> None:
         output.write_text(
             self.model_dump_json(indent=4),

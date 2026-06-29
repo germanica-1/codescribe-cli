@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from .analyzers.dependency import detect_dependencies
 from .analyzers.language import detect_languages
 from .manifest import Manifest, ProjectInfo, Stats
 from .utils import should_ignore
@@ -28,6 +29,7 @@ class ProjectScanner:
                 for file in files
             ],
             languages=detect_languages(files),
+            dependencies=detect_dependencies(self.root),
         )
 
     def _collect_files(self) -> list[Path]:

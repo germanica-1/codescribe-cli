@@ -1,6 +1,6 @@
 {
     "manifest_version": "1.0",
-    "generated_at": "2026-06-29T04:24:31.163808+00:00",
+    "generated_at": "2026-06-29T04:30:08.583451+00:00",
     "project": {
         "name": "CodeScribe-cli",
         "path": "/home/kirv/Desktop/projects/CodeScribe-cli"
@@ -31,5 +31,13 @@
         "Markdown": 1,
         "TOML": 1,
         "Python": 12
+    },
+    "dependencies": {
+        "python": [
+            "pydantic",
+            "rich",
+            "typer"
+        ],
+        "node": []
     }
 }
